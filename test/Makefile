@@ -1,2 +1,2 @@
 test:
-	gcc -g -o test test.c ../src/{cast128,utils}.{c,h}
+	gcc -g -o test.out test.c ../src/{cast128,utils}.{c,h}
