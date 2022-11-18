@@ -1,0 +1,41 @@
+# Symmetric encryption algorithm CAST128
+
+https://www.rfc-editor.org/rfc/rfc2144
+
+## CAST128
+- Class: Feistel ciphers
+- Block size: 64 bits
+- Key length: 40-128 bits (with increment of 8 bits)
+- Rounds: 12-16, 16 rounds when [key length > 80]
+
+### Preface
+"^" is bitwise XOR
+"<<<" is left circular shift (rotate)
+"+" and "-" are performed modulo 2**32
+
+### Algorithm
+
+INPUT:  plaintext m1...m64; key K = k1...k128.
+OUTPUT: ciphertext c1...c64.
+
+1. (key schedule) Compute 16 pairs of subkeys {Kmi, Kri} from K
+   Sections 2.1 and 2.4
+2. (L0,R0) <-- (m1...m64)  
+   Split the plaintext into left and right 32-bit halves 
+   L0 = m1...m32 and R0 = m33...m64.
+3. (16 rounds) for i from 1 to 16, compute Li and Ri as follows:
+   Li = Ri-1;
+   Ri = Li-1 ^ f(Ri-1,Kmi,Kri), where f is defined in Section 2.2
+    (f is of Type 1, Type 2, or Type 3, depending on i).
+4. c1...c64 <-- (R16,L16)
+   Exchange final blocks L16, R16 and concatenate to form the ciphertext.
+
+Decryption is identical to the encryption algorithm given above,
+except that the rounds (and therefore the subkey pairs) are used in
+reverse order to compute (L0,R0) from (R16,L16).
+
+#### 2.1 Pairs of Round Keys
+CAST-128 uses a pair of subkeys per round:  a 32-bit quantity Km is
+used as a "masking" key and a 5-bit quantity Kr is used as a
+"rotation" key.
+
