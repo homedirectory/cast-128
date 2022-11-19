@@ -1,8 +1,8 @@
 #ifndef CAST128_H
 #define CAST128_H
 
-#include <stdint.h>
+#include "common.h"
 
-uint64_t enc_block(uint64_t plain, uint64_t *key);
+void enc_block(byte *plain, byte *key, byte *cipher);
 
 #endif
