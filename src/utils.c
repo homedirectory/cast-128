@@ -43,6 +43,6 @@ uint32_t mod2_32(uint32_t x) {
 
 void printbytes(byte *p, u64 n) {
     for (int i = 0; i < n; i++)
-        printf("%0x ", p[i]);
+        printf("%02x ", p[i]);
     puts("");
 }
