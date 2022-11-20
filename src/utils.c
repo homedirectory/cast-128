@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "utils.h"
 
 static u32 uint32_max = ~0;
@@ -72,3 +73,23 @@ char* strhexdump(char *dst, byte *src, size_t n) {
     return dst;
 }
 
+// single hex char to byte
+static byte htob(char h) {
+    if (h >= 48 && h <= 57) // [0,9]
+        return h - 48;
+    else if (h >= 97 && h <= 102) // [a,f]
+        return h - 97 + 10;
+    else if (h >= 65 && h <= 70) // [A,F]
+        return h - 65 + 10;
+    return 0;
+}
+
+// convert a hexstring (big-endian) to bytes
+// dst must be able to hold strlen(src)/2 bytes
+byte* hexstr_to_bytes(byte *dst, const char *src) {
+    size_t n = strlen(src);
+    for (size_t i = 0; i < n; i+=2) {
+        dst[i/2] = (htob(src[i]) * 16) +  htob(src[i+1]);
+    }
+    return dst;
+}

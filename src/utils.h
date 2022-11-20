@@ -14,3 +14,5 @@ uint32_t mod2_32(uint32_t x);
 void printbytes(byte *p, u64 n);
 
 char* strhexdump(char *dst, byte *src, size_t n);
+
+byte* hexstr_to_bytes(byte *dst, const char *src);
