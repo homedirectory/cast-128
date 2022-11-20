@@ -5,6 +5,7 @@
 #include "stddef.h"
 
 #define BLOCKSIZE 8
+#define KEYSIZE 16
 
 typedef struct _Cast128 {
     u32 Km[16]; // masking keys

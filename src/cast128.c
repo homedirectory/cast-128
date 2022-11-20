@@ -28,18 +28,18 @@ Cast128* Cast128_init(Cast128 *cast, byte *key) {
 
     // 2.4 Key Schedule
     // The subkeys are formed from the key x0x1x2x3x4x5x6x7x8x9xAxBxCxDxExF
-    byte x[16];
+    byte x[KEYSIZE];
     byte *x0 = &(x[0]), *x1 = &(x[1]), *x2 = &(x[2]), *x3 = &(x[3]),
          *x4 = &(x[4]), *x5 = &(x[5]), *x6 = &(x[6]), *x7 = &(x[7]),
          *x8 = &(x[8]), *x9 = &(x[9]), *xA = &(x[10]), *xB = &(x[11]),
          *xC = &(x[12]), *xD = &(x[13]), *xE = &(x[14]), *xF = &(x[15]);
-    memcpy(x, key, 16);
+    memcpy(x, key, KEYSIZE);
 
-    for(int i = 0; i < 16; i++)
+    for(int i = 0; i < sizeof(x); i++)
         printf("x%X=%x\n", i, x[i]);
 
     // temporary bytes
-    byte z[16];
+    byte z[KEYSIZE];
     byte *z0 = &(z[0]), *z1 = &(z[1]), *z2 = &(z[2]), *z3 = &(z[3]),
          *z4 = &(z[4]), *z5 = &(z[5]), *z6 = &(z[6]), *z7 = &(z[7]),
          *z8 = &(z[8]), *z9 = &(z[9]), *zA = &(z[10]), *zB = &(z[11]),
@@ -57,7 +57,7 @@ Cast128* Cast128_init(Cast128 *cast, byte *key) {
     // zCzDzEzF = x4x5x6x7 ^ S5[zA] ^ S6[z9] ^ S7[zB] ^ S8[z8] ^ S6[xB];
     quart(z+0xC, x+4, S5[*zA], S6[*z9], S7[*zB], S8[*z8], S6[*xB]);
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < sizeof(z); i++)
         printf("z%X=%x\n", i, z[i]);
 
     Km[0] = S5[*z8] ^ S6[*z9] ^ S7[*z7] ^ S8[*z6] ^ S5[*z2];
@@ -166,7 +166,7 @@ Cast128* Cast128_init(Cast128 *cast, byte *key) {
     Kr[15] = TAKE_5BITS(S5[*xE] ^ S6[*xF] ^ S7[*x1] ^ S8[*x0] ^ S8[*xD]);
 
     puts("SUBKEYS:");
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < sizeof(Km); i++)
         printf("  %2d: Km = %08x, Kr = %02x\n", i, Km[i], Kr[i]);
 
     return cast;

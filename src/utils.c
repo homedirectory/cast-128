@@ -46,3 +46,29 @@ void printbytes(byte *p, u64 n) {
         printf("%02x ", p[i]);
     puts("");
 }
+
+// byte to a single hex char
+static char btoh(byte b) {
+    // b must be in range [0,15]
+    if (b > 15) return 0;
+    else if (b >= 10) return b + 97 - 10;
+    else return b + 48;
+}
+
+static char* byte_to_hex(char *dst, byte b) {
+    byte bl = b >> 4;
+    byte br = b & 0x0f;
+
+    dst[0] = btoh(bl);
+    dst[1] = btoh(br);
+}
+
+// dst must be large enough to hold 2n chars
+char* strhexdump(char *dst, byte *src, size_t n) {
+    for (int i = 0; i < n; i++) {
+        byte_to_hex(dst+(i*2), src[i]);
+    }
+    dst[n*2] = '\0';
+    return dst;
+}
+
